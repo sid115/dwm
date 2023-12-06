@@ -207,6 +207,7 @@ static void setmfact(const Arg *arg);
 static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
+static int solitary(Client *c);
 static void spawn(const Arg *arg);
 static void spawnscratch(const Arg *arg);
 static void tag(const Arg *arg);
@@ -808,7 +809,10 @@ focus(Client *c)
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, 1);
-		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+        /* Avoid flickering when another client appears and the border is restored */
+		if (!solitary(c)) {
+			XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+		}
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1069,6 +1073,11 @@ manage(Window w, XWindowAttributes *wa)
 	c->bw = borderpx;
 
 	wc.border_width = c->bw;
+    if (solitary(c)) {
+		c->w = wc.width += c->bw * 2;
+		c->h = wc.height += c->bw * 2;
+		wc.border_width = 0;
+	}
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
 	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
@@ -1651,6 +1660,15 @@ showhide(Client *c)
 		showhide(c->snext);
 		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
 	}
+}
+
+int
+solitary(Client *c)
+{
+	return ((nexttiled(c->mon->clients) == c && !nexttiled(c->next))
+	    || &monocle == c->mon->lt[c->mon->sellt]->arrange)
+	    && !c->isfullscreen && !c->isfloating
+	    && NULL != c->mon->lt[c->mon->sellt]->arrange;
 }
 
 void
