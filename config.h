@@ -18,7 +18,6 @@ static const char *colors[][3]      = {
 	/*               fg       bg          border   */
     [SchemeNorm] = { d_white, background, background}, 	
 	[SchemeSel]  = { d_blue,  background, d_blue },
-
 };
 
 /* tagging */
@@ -114,7 +113,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_r,                     spawn,          {.v = (const char*[]){ "dmenu-recording", "kill", NULL }} },
 	{ MODKEY|ShiftMask,             XK_p,                     spawn,          {.v = (const char*[]){ "dmenu-display", NULL }} },
 	{ MODKEY,                       XK_p,                     spawn,          {.v = (const char*[]){ "passmenu", NULL }} },
-	{ MODKEY|ShiftMask,             XK_l,                     spawn,          {.v = (const char*[]){ "pic2tex", NULL }} },
+	{ MODKEY|ControlMask,           XK_l,                     spawn,          {.v = (const char*[]){ "pic2tex", NULL }} },
 	{ MODKEY,                       XK_f,                     spawn,          SHCMD("libreoffice --calc ~/doc/finances.ods") },
 /* F1  */{ 0,                       XF86XK_AudioMute,         spawn,          SHCMD("amixer set Master toggle; pkill -RTMIN+10 dwmblocks") },
 /* F2  */{ 0,                       XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer set Master 5%-; pkill -RTMIN+10 dwmblocks") },
