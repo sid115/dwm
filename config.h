@@ -38,6 +38,7 @@ static const Rule rules[] = {
 	{ NULL,                    NULL,                  "newsboat",                1 << 3,    0,          -1,      0   },
 	{ "Virt-manager",          "virt-manager",        "Virtual Machine Manager", 1 << 8,    0,          -1,      0   },
 	{ NULL,                    NULL,                  "filemanager",             0,         1,          -1,      'f' },
+	{ NULL,                    NULL,                  "volumemixer",             0,         1,          -1,      'v' },
 };
 
 /* layout(s) */
@@ -87,10 +88,12 @@ static const char *vmcmd[]             = { "virt-manager", NULL };
 
 /*First arg only serves to match against key in rules*/
 static const char *filemanagercmd[] = { "f", "st", "-t", "filemanager", "-e", "lf", NULL }; 
+static const char *volumemixercmd[] = { "v", "st", "-t", "volumemixer", "-e", "pulsemixer", NULL }; 
 
 static const Key keys[] = {
 	/* modifier                     key                       function        argument */
   	{ MODKEY,                       XK_d,                     spawn,          {.v = dmenucmd} },
+  	{ MODKEY,                       XK_a,                     spawn,          {.v = volumemixercmd} },
 	{ MODKEY,                       XK_Return,                spawn,          {.v = termcmd} },
 	{ MODKEY,                       XK_e,	                  togglescratch,  {.v = filemanagercmd} },
 	{ MODKEY|ShiftMask,             XK_e,	                  spawn,          {.v = elementcmd} },
