@@ -1985,6 +1985,11 @@ unfocus(Client *c, int setfocus)
 		return;
 	grabbuttons(c, 0);
 	XSetWindowBorder(dpy, c->win, scheme[SchemeNorm][ColBorder].pixel);
+    /* Automatically hide scratchpads */
+    if(c->scratchkey) { 
+        c->tags = 0; 
+        arrange(c->mon); 
+    }
 	if (setfocus) {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
